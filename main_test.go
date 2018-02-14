@@ -1,4 +1,4 @@
-package backend_golang
+package main
 
 import "testing"
 
