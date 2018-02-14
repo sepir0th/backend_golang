@@ -1,4 +1,4 @@
-package awesomeProject
+package backend_golang
 
 import "testing"
 
