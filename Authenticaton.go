@@ -13,6 +13,40 @@ const (
 	DB_NAME     = "excite_mobile_dev"
 )
 
+
+//at first lets open/close database for each hit
+func GetAllUser() []Person{
+
+	dbinfo := fmt.Sprintf("user=%s password=%s dbname=%s sslmode=disable",
+		DB_USER, DB_PASSWORD, DB_NAME)
+	db, err := sql.Open("postgres", dbinfo)
+	checkErr(err)
+	defer db.Close()
+
+	fmt.Println("# Querying")
+	rows, err := db.Query("SELECT * FROM userinfo")
+	checkErr(err)
+
+	var people []Person
+	for rows.Next() {
+		var uid int
+		var username string
+		var department string
+		var created time.Time
+		err = rows.Scan(&uid, &username, &department, &created)
+		checkErr(err)
+		fmt.Println("uid | username | department | created ")
+		fmt.Printf("%3v | %8v | %6v | %6v\n", uid, username, department, created)
+
+		//lets put the value inside person
+		var person Person
+		person.ID = username
+		person.Firstname = username
+		people = append(people, person)
+	}
+	return people
+}
+
 func MainAuthentication() {
 	dbinfo := fmt.Sprintf("user=%s password=%s dbname=%s sslmode=disable",
 		DB_USER, DB_PASSWORD, DB_NAME)
@@ -38,21 +72,6 @@ func MainAuthentication() {
 	checkErr(err)
 
 	fmt.Println(affect, "rows changed")
-
-	fmt.Println("# Querying")
-	rows, err := db.Query("SELECT * FROM userinfo")
-	checkErr(err)
-
-	for rows.Next() {
-		var uid int
-		var username string
-		var department string
-		var created time.Time
-		err = rows.Scan(&uid, &username, &department, &created)
-		checkErr(err)
-		fmt.Println("uid | username | department | created ")
-		fmt.Printf("%3v | %8v | %6v | %6v\n", uid, username, department, created)
-	}
 
 	fmt.Println("# Deleting")
 	stmt, err = db.Prepare("delete from userinfo where uid=$1")
