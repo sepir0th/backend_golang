@@ -39,11 +39,11 @@ func GetPerson(w http.ResponseWriter, r *http.Request) {
 
 // create a new item
 func CreatePerson(w http.ResponseWriter, r *http.Request) {
-	params := mux.Vars(r)
+	//params := mux.Vars(r)
 	var person Person
 	_ = json.NewDecoder(r.Body).Decode(&person)
-	person.ID = params["username"]
-	person.Firstname = "defaultPassword"
+	//person.ID = params["username"]
+	//person.Firstname = "defaultPassword"
 	insertUser(person.ID, person.Firstname)
 	people = append(people, person)
 	json.NewEncoder(w).Encode(people)
