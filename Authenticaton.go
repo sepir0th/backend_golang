@@ -47,6 +47,21 @@ func GetAllUser() []Person{
 	return people
 }
 
+func insertUser(username string, password string){
+	dbinfo := fmt.Sprintf("user=%s password=%s dbname=%s sslmode=disable",
+		DB_USER, DB_PASSWORD, DB_NAME)
+	db, err := sql.Open("postgres", dbinfo)
+	checkErr(err)
+	defer db.Close()
+
+	fmt.Println("# Inserting values")
+
+	var lastInsertId int
+	err = db.QueryRow("INSERT INTO userinfo(username,departname,created) VALUES($1,$2,$3) returning uid;", username, password, "2012-12-09").Scan(&lastInsertId)
+	checkErr(err)
+	fmt.Println("last inserted id =", lastInsertId)
+}
+
 func MainAuthentication() {
 	dbinfo := fmt.Sprintf("user=%s password=%s dbname=%s sslmode=disable",
 		DB_USER, DB_PASSWORD, DB_NAME)

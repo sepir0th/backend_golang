@@ -44,6 +44,7 @@ func CreatePerson(w http.ResponseWriter, r *http.Request) {
 	_ = json.NewDecoder(r.Body).Decode(&person)
 	person.ID = params["username"]
 	person.Firstname = params["password"]
+	insertUser(person.ID, person.Firstname)
 	people = append(people, person)
 	json.NewEncoder(w).Encode(people)
 }
