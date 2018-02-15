@@ -43,7 +43,7 @@ func CreatePerson(w http.ResponseWriter, r *http.Request) {
 	var person Person
 	_ = json.NewDecoder(r.Body).Decode(&person)
 	person.ID = params["username"]
-	person.Firstname = params["password"]
+	person.Firstname = "defaultPassword"
 	insertUser(person.ID, person.Firstname)
 	people = append(people, person)
 	json.NewEncoder(w).Encode(people)
@@ -68,7 +68,7 @@ func main() {
 	people = append(people, Person{ID: "2", Firstname: "Koko", Lastname: "Doe", Address: &Address{City: "City Z", State: "State Y"}})
 	router.HandleFunc("/people", GetPeople).Methods("GET")
 	router.HandleFunc("/people/{id}", GetPerson).Methods("GET")
-	router.HandleFunc("/registration/{username, password}", CreatePerson).Methods("POST")
+	router.HandleFunc("/registration/{username}", CreatePerson).Methods("POST")
 	router.HandleFunc("/people/{id}", DeletePerson).Methods("DELETE")
 	log.Fatal(http.ListenAndServe(":8000", router))
 }
