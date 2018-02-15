@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"github.com/gorilla/mux"
+	"fmt"
 )
 
 type Person struct {
@@ -42,6 +43,9 @@ func CreatePerson(w http.ResponseWriter, r *http.Request) {
 	//params := mux.Vars(r)
 	var person Person
 	_ = json.NewDecoder(r.Body).Decode(&person)
+	fmt.Println(mux.Vars(r))
+	fmt.Println(person.ID)
+	fmt.Println(person.Firstname)
 	//person.ID = params["username"]
 	//person.Firstname = "defaultPassword"
 	insertUser(person.ID, person.Firstname)
@@ -68,7 +72,7 @@ func main() {
 	people = append(people, Person{ID: "2", Firstname: "Koko", Lastname: "Doe", Address: &Address{City: "City Z", State: "State Y"}})
 	router.HandleFunc("/people", GetPeople).Methods("GET")
 	router.HandleFunc("/people/{id}", GetPerson).Methods("GET")
-	router.HandleFunc("/registration/{username}", CreatePerson).Methods("POST")
+	router.HandleFunc("/registration", CreatePerson).Methods("POST")
 	router.HandleFunc("/people/{id}", DeletePerson).Methods("DELETE")
 	log.Fatal(http.ListenAndServe(":8000", router))
 }
