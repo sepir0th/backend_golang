@@ -8,10 +8,13 @@ import (
 	"github.com/kataras/iris"
 	"github.com/kataras/iris/middleware/logger"
 	"github.com/kataras/iris/middleware/recover"
+	"time"
 )
 
 type Person struct {
 	ID        string   `json:"id,omitempty"`
+	Username  string   `json:"username,omitempty"`
+	Password  string   `json:"password,omitempty"`
 	Firstname string   `json:"firstname,omitempty"`
 	Lastname  string   `json:"lastname,omitempty"`
 	Address   *Address `json:"address,omitempty"`
@@ -41,18 +44,12 @@ func GetPerson(w http.ResponseWriter, r *http.Request) {
 }
 
 // create a new item
-func CreatePerson(w http.ResponseWriter, r *http.Request) {
-	//params := mux.Vars(r)
+func CreatePerson(ctx iris.Context) {
 	var person Person
-	_ = json.NewDecoder(r.Body).Decode(&person)
-	fmt.Println(mux.Vars(r))
-	fmt.Println(person.ID)
-	fmt.Println(person.Firstname)
-	//person.ID = params["username"]
-	//person.Firstname = "defaultPassword"
-	insertUser(person.ID, person.Firstname)
-	people = append(people, person)
-	json.NewEncoder(w).Encode(people)
+	_ = ctx.ReadJSON(&person)
+	address := person.Address.City + " " + person.Address.State
+	insertUser(person.ID, person.Password, person.Firstname, person.Lastname, address, time.Now().Local().Format("2017-02-02"))
+	ctx.JSON("true")
 }
 
 // Delete an item
@@ -103,12 +100,7 @@ func main() {
 		ctx.WriteString("pong")
 	})
 
-	app.Post("/registration", func(ctx iris.Context) {
-		var person Person
-		_ = ctx.ReadJSON(&person)
-		insertUser(person.ID, person.Firstname)
-		ctx.JSON("true")
-	})
+	app.Post("/registration", CreatePerson)
 
 	// Method:   GET
 	// Resource: http://localhost:8080/hello
