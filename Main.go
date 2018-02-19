@@ -52,6 +52,13 @@ func CreatePerson(ctx iris.Context) {
 	ctx.JSON("true")
 }
 
+// authenticate an user
+func AuthenticateUser(ctx iris.Context) {
+	username := ctx.Params().Get("username")
+	password := ctx.Params().Get("username")
+	ctx.JSON(UserAuthentication(username, password))
+}
+
 // Delete an item
 func DeletePerson(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
@@ -104,9 +111,7 @@ func main() {
 
 	// Method:   GET
 	// Resource: http://localhost:8080/hello
-	app.Get("/hello", func(ctx iris.Context) {
-		ctx.JSON(iris.Map{"message": "Hello Iris!"})
-	})
+	app.Get("/authentication", AuthenticateUser)
 
 	// http://localhost:8080
 	// http://localhost:8080/ping
