@@ -62,7 +62,7 @@ func insertUser(username string, password string, firstname string, lastname str
 	checkErr(err)
 	defer db.Close()
 
-	fmt.Println("# Inserting values")
+	fmt.Println("# Inserting values "+ username + " " +password + " " +firstname + " " +lastname + " " +address + " " +dateCreated)
 
 	var lastInsertId int
 	err = db.QueryRow("INSERT INTO userinfo(username,password,firstname, lastname,address,created,modified) VALUES($1,$2,$3,$4,$5,$6,$7) returning uid;",
