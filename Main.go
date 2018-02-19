@@ -2,10 +2,12 @@ package main
 
 import (
 	"encoding/json"
-	"log"
 	"net/http"
 	"github.com/gorilla/mux"
 	"fmt"
+	"github.com/kataras/iris"
+	"github.com/kataras/iris/middleware/logger"
+	"github.com/kataras/iris/middleware/recover"
 )
 
 type Person struct {
@@ -67,6 +69,7 @@ func DeletePerson(w http.ResponseWriter, r *http.Request) {
 
 // our main function
 func main() {
+	/*
 	router := mux.NewRouter()
 	people = append(people, Person{ID: "1", Firstname: "John", Lastname: "Doe", Address: &Address{City: "City X", State: "State X"}})
 	people = append(people, Person{ID: "2", Firstname: "Koko", Lastname: "Doe", Address: &Address{City: "City Z", State: "State Y"}})
@@ -75,6 +78,41 @@ func main() {
 	router.HandleFunc("/registration", CreatePerson).Methods("POST").HeadersRegexp("Content-Type", "application/(text|json)")
 	router.HandleFunc("/people/{id}", DeletePerson).Methods("DELETE")
 	log.Fatal(http.ListenAndServe(":8000", router))
+	*/
+
+	//lets try to implement iris
+	app := iris.New()
+	app.Logger().SetLevel("debug")
+	// Optionally, add two built'n handlers
+	// that can recover from any http-relative panics
+	// and log the requests to the terminal
+	app.Use(recover.New())
+	app.Use(logger.New())
+
+
+	// Method:   GET
+	// Resource: http://localhost:8080
+	app.Handle("GET", "/", func(ctx iris.Context) {
+		ctx.HTML("<h1>Welcome</h1>")
+	})
+
+	// same as app.Handle("GET", "/ping", [...])
+	// Method:   GET
+	// Resource: http://localhost:8080/ping
+	app.Get("/ping", func(ctx iris.Context) {
+		ctx.WriteString("pong")
+	})
+
+	// Method:   GET
+	// Resource: http://localhost:8080/hello
+	app.Get("/hello", func(ctx iris.Context) {
+		ctx.JSON(iris.Map{"message": "Hello Iris!"})
+	})
+
+	// http://localhost:8080
+	// http://localhost:8080/ping
+	// http://localhost:8080/hello
+	app.Run(iris.Addr(":8000"), iris.WithoutServerError(iris.ErrServerClosed))
 }
 
 // Game contains the state of a bowling game.
