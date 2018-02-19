@@ -48,8 +48,12 @@ func GetAllUser() []Person{
 		person.Password = password
 		person.Firstname = firstname
 		person.Lastname = lastname
-		//person.Address.City = address
-		//person.Address.State = address
+
+		var addressPerson Address
+		addressPerson.City = address
+		addressPerson.State = address
+
+		person.Address = &addressPerson
 		people = append(people, person)
 	}
 	return people
