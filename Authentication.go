@@ -59,6 +59,33 @@ func GetAllUser() []Person{
 	return people
 }
 
+func UserAuthentication(clientUsername string, clientPassword string) bool{
+	dbinfo := fmt.Sprintf("user=%s password=%s dbname=%s sslmode=disable",
+		DB_USER, DB_PASSWORD, DB_NAME)
+	db, err := sql.Open("postgres", dbinfo)
+	checkErr(err)
+	defer db.Close()
+
+	fmt.Println("# Authenticating")
+	rows, err := db.Query("SELECT username, password FROM userinfo")
+	checkErr(err)
+
+	for rows.Next() {
+		var username string
+		var password string
+		err = rows.Scan(&username, &password)
+		checkErr(err)
+		fmt.Println("username | password ")
+		fmt.Printf("%8v | %8v ", username, password)
+
+		if(clientUsername == username && clientPassword == password){
+			return true
+		}
+
+	}
+	return false
+}
+
 func insertUser(username string, password string, firstname string, lastname string, address string, dateCreated string){
 	dbinfo := fmt.Sprintf("user=%s password=%s dbname=%s sslmode=disable",
 		DB_USER, DB_PASSWORD, DB_NAME)
