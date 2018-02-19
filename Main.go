@@ -92,8 +92,8 @@ func main() {
 
 	// Method:   GET
 	// Resource: http://localhost:8080
-	app.Handle("GET", "/", func(ctx iris.Context) {
-		ctx.HTML("<h1>Welcome</h1>")
+	app.Handle("GET", "/people", func(ctx iris.Context) {
+		ctx.JSON(GetAllUser())
 	})
 
 	// same as app.Handle("GET", "/ping", [...])
