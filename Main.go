@@ -47,7 +47,8 @@ func CreatePerson(ctx iris.Context) {
 	var person Person
 	_ = ctx.ReadJSON(&person)
 	address := person.Address.City + " " + person.Address.State
-	insertUser(person.ID, person.Password, person.Firstname, person.Lastname, address, time.Now().Format("2017-02-02"))
+	t,_ := time.Parse("2006-01-02","2017-02-02")
+	insertUser(person.ID, person.Password, person.Firstname, person.Lastname, address, t.Format("2006-01-02"))
 	ctx.JSON("true")
 }
 
