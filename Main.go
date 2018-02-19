@@ -54,8 +54,8 @@ func CreatePerson(ctx iris.Context) {
 
 // authenticate an user
 func AuthenticateUser(ctx iris.Context) {
-	username := ctx.Params().Get("username")
-	password := ctx.Params().Get("password")
+	username := ctx.FormValue("username")
+	password := ctx.FormValue("password")
 	ctx.JSON(UserAuthentication(username, password))
 }
 
