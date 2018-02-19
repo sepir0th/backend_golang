@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"net/http"
 	"github.com/gorilla/mux"
-	"fmt"
 	"github.com/kataras/iris"
 	"github.com/kataras/iris/middleware/logger"
 	"github.com/kataras/iris/middleware/recover"
