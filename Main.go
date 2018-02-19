@@ -111,7 +111,7 @@ func main() {
 
 	// Method:   GET
 	// Resource: http://localhost:8080/hello
-	app.Get("/authentication", AuthenticateUser)
+	app.Post("/authentication", AuthenticateUser)
 
 	// http://localhost:8080
 	// http://localhost:8080/ping
