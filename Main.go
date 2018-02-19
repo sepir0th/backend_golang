@@ -103,6 +103,13 @@ func main() {
 		ctx.WriteString("pong")
 	})
 
+	app.Post("/registration", func(ctx iris.Context) {
+		var person Person
+		_ = ctx.ReadJSON(&person)
+		insertUser(person.ID, person.Firstname)
+		ctx.JSON("true")
+	})
+
 	// Method:   GET
 	// Resource: http://localhost:8080/hello
 	app.Get("/hello", func(ctx iris.Context) {
