@@ -44,7 +44,7 @@ func GetAllUser() []Person{
 
 		//lets put the value inside person
 		var person Person
-		person.ID = username
+		person.Username = username
 		person.Password = password
 		person.Firstname = firstname
 		person.Lastname = lastname
@@ -66,7 +66,7 @@ func UserAuthentication(clientUsername string, clientPassword string) bool{
 	checkErr(err)
 	defer db.Close()
 
-	fmt.Println("# Authenticating")
+	fmt.Println("# Authenticating "+ clientUsername +" "+ clientPassword)
 	rows, err := db.Query("SELECT username, password FROM userinfo")
 	checkErr(err)
 
