@@ -110,10 +110,11 @@ func sendEmailVerification(){
 	}
 
 	// Generate the plaintext version of the e-mail (for clients that do not support xHTML)
-	// emailText, errPlain := h.GeneratePlainText(email)
-	// if errPlain != nil {
-	// 	panic(errPlain) // Tip: Handle error with something else than a panic ;)
-	// }
+	emailText, errPlain := h.GeneratePlainText(email)
+	if errPlain != nil {
+		panic(errPlain) // Tip: Handle error with something else than a panic ;)
+	}
+	fmt.Print(emailText)
 
 	// Optionally, preview the generated HTML e-mail by writing it to a local file
 	// err = ioutil.WriteFile("preview.html", []byte(emailBody), 0644)
@@ -126,7 +127,7 @@ func sendEmailVerification(){
 	err := smtp.SendMail(
 		"smtp.gmail.com:587",
 		auth,
-		"button.setonclicklistener@gmail.com",
+		"erwin@excite.co.id",
 
 		[]string{"ultima51@yahoo.com"},
 		[]byte(emailBody),
