@@ -12,7 +12,6 @@ import (
 	"log"
 	"fmt"
 	"github.com/matcornic/hermes"
-	"io/ioutil"
 )
 
 type Person struct {
