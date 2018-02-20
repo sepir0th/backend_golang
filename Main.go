@@ -61,7 +61,7 @@ func sendEmailVerification(){
 	// Set up authentication information.
 	auth := smtp.PlainAuth(
 		"",
-		"button.setonclicklistener@gmail.com",
+		"erwin@excite.co.id",
 		"jmb_Ultima[1]",
 		"smtp.gmail.com",
 	)
@@ -135,9 +135,6 @@ func main() {
 	})
 
 	app.Post("/registration", CreatePerson)
-
-	// Method:   GET
-	// Resource: http://localhost:8080/hello
 	app.Post("/authentication", AuthenticateUser)
 
 	// http://localhost:8080
