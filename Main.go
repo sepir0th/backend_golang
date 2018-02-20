@@ -123,13 +123,15 @@ func sendEmailVerification(){
 
 	// Connect to the server, authenticate, set the sender and recipient,
 	// and send the email all in one step.
+	mime := "MIME-version: 1.0;\nContent-Type: text/html; charset=\"UTF-8\";\n\n";
+	subject := "Subject: Test email from Go!\n"
 	err := smtp.SendMail(
 		"smtp.gmail.com:587",
 		auth,
 		"erwin@excite.co.id",
 
 		[]string{"ultima51@yahoo.com"},
-		[]byte(emailBody),
+		[]byte(subject + mime + emailBody),
 	)
 	if err != nil {
 		log.Fatal(err)
