@@ -8,6 +8,8 @@ import (
 	"github.com/kataras/iris/middleware/logger"
 	"github.com/kataras/iris/middleware/recover"
 	"time"
+	"net/smtp"
+	"log"
 )
 
 type Person struct {
@@ -49,7 +51,30 @@ func CreatePerson(ctx iris.Context) {
 	address := person.Address.City + " " + person.Address.State
 	t,_ := time.Parse("2006-01-02","2017-02-02")
 	insertUser(person.Username, person.Password, person.Firstname, person.Lastname, address, t.Format("2006-01-02"))
+	sendEmailVerification()
 	ctx.JSON("true")
+}
+
+func sendEmailVerification(){
+	// Set up authentication information.
+	auth := smtp.PlainAuth(
+		"",
+		"button.setonclicklistener@gmail.com",
+		"jmb_Ultima[1]",
+		"smtp.gmail.com",
+	)
+	// Connect to the server, authenticate, set the sender and recipient,
+	// and send the email all in one step.
+	err := smtp.SendMail(
+		"smtp.gmail.com:587",
+		auth,
+		"button.setonclicklistener@gmail.com",
+		[]string{"ultima51@yahoo.com"},
+		[]byte("This is the email body."),
+	)
+	if err != nil {
+		log.Fatal(err)
+	}
 }
 
 // authenticate an user
