@@ -11,6 +11,8 @@ import (
 	"net/smtp"
 	"log"
 	"fmt"
+	"github.com/matcornic/hermes"
+	"io/ioutil"
 )
 
 type Person struct {
@@ -65,14 +67,69 @@ func sendEmailVerification(){
 		"jmb_Ultima[1]",
 		"smtp.gmail.com",
 	)
+
+	// Configure hermes by setting a theme and your product info
+	h := hermes.Hermes{
+		// Optional Theme
+		// Theme: new(Default)
+		Product: hermes.Product{
+			// Appears in header & footer of e-mails
+			Name: "Hermes",
+			Link: "https://example-hermes.com/",
+			// Optional product logo
+			Logo: "http://www.duchess-france.org/wp-content/uploads/2016/01/gopher.png",
+		},
+	}
+
+	email := hermes.Email{
+		Body: hermes.Body{
+			Name: "Jon Snow",
+			Intros: []string{
+				"Welcome to Hermes! We're very excited to have you on board.",
+			},
+			Actions: []hermes.Action{
+				{
+					Instructions: "To get started with Hermes, please click here:",
+					Button: hermes.Button{
+						Color: "#22BC66", // Optional action button color
+						Text:  "Confirm your account",
+						Link:  "https://hermes-example.com/confirm?token=d9729feb74992cc3482b350163a1a010",
+					},
+				},
+			},
+			Outros: []string{
+				"Need help, or have questions? Just reply to this email, we'd love to help.",
+			},
+		},
+	}
+
+	// Generate an HTML email with the provided contents (for modern clients)
+	emailBody, errEmail := h.GenerateHTML(email)
+	if errEmail != nil {
+		panic(errEmail) // Tip: Handle error with something else than a panic ;)
+	}
+
+	// Generate the plaintext version of the e-mail (for clients that do not support xHTML)
+	// emailText, errPlain := h.GeneratePlainText(email)
+	// if errPlain != nil {
+	// 	panic(errPlain) // Tip: Handle error with something else than a panic ;)
+	// }
+
+	// Optionally, preview the generated HTML e-mail by writing it to a local file
+	// err = ioutil.WriteFile("preview.html", []byte(emailBody), 0644)
+	// if err != nil {
+	// 	panic(err) // Tip: Handle error with something else than a panic ;)
+	// }
+
 	// Connect to the server, authenticate, set the sender and recipient,
 	// and send the email all in one step.
 	err := smtp.SendMail(
 		"smtp.gmail.com:587",
 		auth,
 		"button.setonclicklistener@gmail.com",
+
 		[]string{"ultima51@yahoo.com"},
-		[]byte("This is the email body."),
+		[]byte(emailBody),
 	)
 	if err != nil {
 		log.Fatal(err)
