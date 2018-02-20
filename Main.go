@@ -49,7 +49,7 @@ func GetPerson(w http.ResponseWriter, r *http.Request) {
 func CreatePerson(ctx iris.Context) {
 	var person Person
 	_ = ctx.ReadJSON(&person)
-	fmt.Print(person)
+	fmt.Print("Person's username data: "+ person.Username)
 	address := person.Address.City + " " + person.Address.State
 	t,_ := time.Parse("2006-01-02","2017-02-02")
 	insertUser(person.Username, person.Password, person.Firstname, person.Lastname, address, t.Format("2006-01-02"))
