@@ -175,13 +175,6 @@ func main() {
 	log.Fatal(http.ListenAndServe(":8000", router))
 	*/
 
-	//https testing purpose
-	http.HandleFunc("/hello", HelloServer)
-	err := http.ListenAndServeTLS(":8000", "./excite.co.id.crt", "./excite.co.id.key", nil)
-	if err != nil {
-		log.Fatal("ListenAndServe: ", err)
-	}
-
 	//lets try to implement iris
 	app := iris.New()
 	app.Logger().SetLevel("debug")
@@ -214,14 +207,8 @@ func main() {
 	// http://localhost:8080
 	// http://localhost:8080/ping
 	// http://localhost:8080/hello
-	app.Run(iris.Addr(":8000"), iris.WithoutServerError(iris.ErrServerClosed))
-}
-
-func HelloServer(w http.ResponseWriter, req *http.Request) {
-	w.Header().Set("Content-Type", "text/plain")
-	w.Write([]byte("This is an example server.\n"))
-	// fmt.Fprintf(w, "This is an example server.\n")
-	// io.WriteString(w, "This is an example server.\n")
+	//app.Run(iris.Addr(":8000"), iris.WithoutServerError(iris.ErrServerClosed))
+	app.Run(iris.TLS("127.0.0.1:8000","./excite.co.id.crt","./excite.co.id.key"))
 }
 
 // Game contains the state of a bowling game.
