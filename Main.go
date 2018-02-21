@@ -208,7 +208,7 @@ func main() {
 	// http://localhost:8080/ping
 	// http://localhost:8080/hello
 	//app.Run(iris.Addr(":8000"), iris.WithoutServerError(iris.ErrServerClosed))
-	app.Run(iris.TLS("127.0.0.1:8000","./excite.co.id.crt","./excite.co.id.key"))
+	app.Run(iris.TLS("https://localhost:8000","./excite.co.id.crt","./excite.co.id.key"))
 }
 
 // Game contains the state of a bowling game.
