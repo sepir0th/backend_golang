@@ -162,6 +162,9 @@ func DeletePerson(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+//this function is needed to authenticate the token access
+
+
 // our main function
 func main() {
 	/*
@@ -175,6 +178,7 @@ func main() {
 	log.Fatal(http.ListenAndServe(":8000", router))
 	*/
 
+
 	//lets try to implement iris
 	app := iris.New()
 	app.Logger().SetLevel("debug")
@@ -184,6 +188,8 @@ func main() {
 	app.Use(recover.New())
 	app.Use(logger.New())
 
+	//lets initialize our oauth2.0
+	MainOauth(app)
 
 	// Method:   GET
 	// Resource: http://localhost:8080
@@ -194,8 +200,8 @@ func main() {
 	// same as app.Handle("GET", "/ping", [...])
 	// Method:   GET
 	// Resource: http://localhost:8080/ping
-	app.Get("/ping", func(ctx iris.Context) {
-		ctx.WriteString("pong")
+	app.Get("/verifyToken", func(ctx iris.Context) {
+
 	})
 
 	app.Post("/registration", CreatePerson)
