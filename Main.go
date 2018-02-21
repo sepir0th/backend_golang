@@ -176,11 +176,11 @@ func main() {
 	*/
 
 	//https testing purpose
-	//http.HandleFunc("/hello", HelloServer)
-	//err := http.ListenAndServeTLS(":443", "./excite.co.id.crt", "./excite.co.id.key", nil)
-	//if err != nil {
-	//	log.Fatal("ListenAndServe: ", err)
-	//}
+	http.HandleFunc("/hello", HelloServer)
+	err := http.ListenAndServeTLS(":8000", "./excite.co.id.crt", "./excite.co.id.key", nil)
+	if err != nil {
+		log.Fatal("ListenAndServe: ", err)
+	}
 
 	//lets try to implement iris
 	app := iris.New()
