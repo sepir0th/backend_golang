@@ -145,6 +145,11 @@ func AuthenticateUser(ctx iris.Context) {
 	ctx.JSON(UserAuthentication(username, password))
 }
 
+// verify user through email
+func EmailVerification(ctx iris.Context) {
+	ctx.HTML("<html><header><title>This is title</title></header><body>Hello world</body></html>")
+}
+
 // Delete an item
 func DeletePerson(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
@@ -169,6 +174,13 @@ func main() {
 	router.HandleFunc("/people/{id}", DeletePerson).Methods("DELETE")
 	log.Fatal(http.ListenAndServe(":8000", router))
 	*/
+
+	//https testing purpose
+	http.HandleFunc("/hello", HelloServer)
+	err := http.ListenAndServeTLS(":443", "./excite.co.id.crt", "./excite.co.id.key", nil)
+	if err != nil {
+		log.Fatal("ListenAndServe: ", err)
+	}
 
 	//lets try to implement iris
 	app := iris.New()
@@ -196,10 +208,20 @@ func main() {
 	app.Post("/registration", CreatePerson)
 	app.Post("/authentication", AuthenticateUser)
 
+
+	app.Get("/emailVerification/{token}", EmailVerification)
+
 	// http://localhost:8080
 	// http://localhost:8080/ping
 	// http://localhost:8080/hello
 	app.Run(iris.Addr(":8000"), iris.WithoutServerError(iris.ErrServerClosed))
+}
+
+func HelloServer(w http.ResponseWriter, req *http.Request) {
+	w.Header().Set("Content-Type", "text/plain")
+	w.Write([]byte("This is an example server.\n"))
+	// fmt.Fprintf(w, "This is an example server.\n")
+	// io.WriteString(w, "This is an example server.\n")
 }
 
 // Game contains the state of a bowling game.
