@@ -33,7 +33,7 @@ func MainOauth(application *iris.Application) {
 	clientStore.Set("222222", &models.Client{
 		ID:     "222222",
 		Secret: "22222222",
-		Domain: "http://localhost:9095",
+		Domain: "nl.jpelgrm.retrofit2oauthrefresh://",
 	})
 	manager.MapClientStorage(clientStore)
 
